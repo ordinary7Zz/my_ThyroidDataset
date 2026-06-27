@@ -6,3 +6,5 @@
 !pycodes/
 # 放行 pycodes 内部所有文件（关键，否则目录放行但里面文件还是被忽略）
 !pycodes/**
+# 重新忽略 .ipynb_checkpoints 目录（必须在放行规则之后，才能覆盖前面的放行）
+**/.ipynb_checkpoints/
