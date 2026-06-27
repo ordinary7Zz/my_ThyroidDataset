@@ -1,3 +1,62 @@
+"""
+================================================================================
+脚本名称：create_all_dataset_cls.py
+功能说明：将多个子数据集的图像和标注掩码（mask）汇总到一个目录，并可合并 JSON 标签文件。
+
+核心逻辑：
+    1. 从多个源 image_dirs 和 mask_dirs 中，按文件名（不含扩展名）一一匹配图像与掩码，
+       复制到目标 dst_image_dir 和 dst_mask_dir。
+    2. 如果提供了 json_paths 列表，将多个 JSON 文件（每个是 list 结构）合并成一个
+       大的 JSON 数组，写入 out_json_path。
+    3. 最后检查目标目录中图像数量、掩码数量、JSON 条目数是否三者一致。
+
+适用场景：
+    - 你有多个来源的甲状腺超声数据集（如 TN3K、ThyroidXL、TN5K、Cine-Clip 等），
+      每个数据集有自己的 images、masks 目录和 label.json 文件，需要合并成一个
+      统一的大数据集，用于分类任务的训练。
+
+使用方法：
+    1. 修改 main 块中的四个配置变量：
+       - image_dirs: 源图像目录列表，每个目录下包含 .jpg/.jpeg/.png 图像文件。
+       - mask_dirs: 源掩码目录列表，与 image_dirs 一一对应。
+       - dst_image_dir: 汇总后的目标图像目录。
+       - dst_mask_dir: 汇总后的目标掩码目录。
+       - json_paths: 要合并的 JSON 标签文件列表（可选）。
+       - out_json_path: 合并后的 JSON 文件输出路径（json_paths 非空时必填）。
+
+    2. 确保 image_dirs 和 mask_dirs 长度相等，且按相同索引一一对应。
+       例如 image_dirs[0] 中的图像，会在 mask_dirs[0] 中寻找同名掩码。
+
+    3. 如果不需要合并 JSON，将 json_paths 设为空列表 [] 即可，此时不会执行
+       JSON 合并步骤，也不会进行图像数量与 JSON 条目数的校验。
+
+    4. 运行脚本：
+           python create_all_dataset_cls.py
+
+    5. 运行完成后会打印目标目录的文件数量，以及合并 JSON 的条目数。
+       如果 images、masks、JSON 数量不一致，会抛出 ValueError。
+
+手动调用函数示例：
+    from create_all_dataset_cls import copy_images_and_merge_json
+
+    copy_images_and_merge_json(
+        image_dirs=["/data/A/images", "/data/B/images"],
+        mask_dirs=["/data/A/masks", "/data/B/masks"],
+        dst_image_dir="/data/merged/images",
+        dst_mask_dir="/data/merged/masks",
+        json_paths=["/data/A/label.json", "/data/B/label.json"],
+        out_json_path="/data/merged/label.json",
+    )
+
+注意事项：
+    - 图像和掩码的匹配依据是文件名（不含扩展名），例如 a.jpg 匹配 a.png。
+    - 大小写不敏感。
+    - 若同一 stem 下有多个候选掩码文件，只取第一个。
+    - 若某图像找不到对应掩码，会打印警告并跳过该图像。
+    - 复制使用 shutil.copy2，会保留文件的元数据（如修改时间）。
+================================================================================
+"""
+
 import os
 import shutil
 import json
