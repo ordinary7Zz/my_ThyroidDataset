@@ -1,0 +1,8 @@
+# 忽略所有文件/目录
+*
+# 放行 .gitignore 文件本身
+!.gitignore
+# 放行 pycodes 整个目录
+!pycodes/
+# 放行 pycodes 内部所有文件（关键，否则目录放行但里面文件还是被忽略）
+!pycodes/**
