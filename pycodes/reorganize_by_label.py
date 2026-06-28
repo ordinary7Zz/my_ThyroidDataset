@@ -90,16 +90,16 @@ from collections import defaultdict
 # ==============================================================================
 
 # 源图像目录（image 和 mask 的文件名是一一对应的，通过 stem 匹配）
-SRC_IMAGE_DIR = "/mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/Cine-Clip/train/images"
+SRC_IMAGE_DIR = "/mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/Cine-Clip/test/images"
 
 # 源掩码目录
-SRC_MASK_DIR = "/mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/Cine-Clip/train/masks"
+SRC_MASK_DIR = "/mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/Cine-Clip/test/masks"
 
 # 分类标签 JSON 文件路径
-JSON_PATH = "/mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/Cine-Clip/train/Cine-Clip_train_label.json"
+JSON_PATH = "/mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/Cine-Clip/test/Cine-Clip_test_label.json"
 
 # 目标根目录（会自动在其下创建 images/{标签值}/ 和 masks/{标签值}/ 子目录）
-TARGET_BASE_DIR = "/mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/Cine-Clip/Cine-Clip_by_TIRADS/train"
+TARGET_BASE_DIR = "/mnt/wangbd8/workspace/DataSets/ThyroidAgent/train_val_test/Cine-Clip/Cine-Clip_by_TIRADS/test"
 
 # 分类字段名（JSON 中用作分类标签的 key）
 # 可选值: "malignancy", "LNM_CN01", "FTCPTC", "tirads"
